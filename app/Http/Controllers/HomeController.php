@@ -15,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except'=>'api']);
     }
 
     /**
@@ -26,5 +26,14 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+
+    public function api()
+    {
+        if (rand(0, 1)==0) {
+            return Response::json("ok");
+        }
+        else return Response::json("false");
     }
 }

@@ -15,8 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/api', 'ServerGameController@api');
-
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
@@ -27,27 +25,11 @@ Route::get('/gifts', [
 	]);
 
 Route::post('/gifts', [
-	'as' => 'giftdetail.store',
-	'uses' => 'GiftDetailsController@store'
+	'as' => 'gifts.store',
+	'uses' => 'GiftsController@store'
 	]);
 
-
-
-
-Route::group(['middleware' => 'cors', 'prefix' => 'api/'], function()
-{
-    Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);
-    Route::post('login', 'AuthenticateController@authenticate');
-    Route::get('login', 'AuthenticateController@getAuthenticatedUser');
-
-
-	Route::get('gifts', [
-		'as' => 'gifts.api.index',
-		'uses' => 'ServerGameController@getGifts'
-		]);
-
-	Route::post('gifts', [
-		'as' => 'giftdetail.api.store',
-		'uses' => 'ServerGameController@store'
-		]);
-});
+Route::get('/api', [
+	'as' => 'gifts.api',
+	'uses' => 'HomeController@api'
+	]);

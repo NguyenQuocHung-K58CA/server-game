@@ -1,0 +1,15 @@
+Sau khi review anh co mot so goi y nhu sau nhe'
+1. code viet don gian het muc co' the?, quan trong nhat la nhanh va de mantain
+2. Convention : cach dat ten ham ten bien, ten model..
+3. Xu ly chong' trung` khi nhieu cronjob chay cung luc, cai nay hien nay chi co Dong lam duoc
+3. Viet API gia lap random tra ve true/false, su dung curl de ket noi voi API, co bat' cac exception theo curl errors.
+4. co' co* che' de gui? lai. khi bi. false
+5. Du lieu tren redis co the bi  xoa', phai kiem tra dong` thio` trong ca? mysql
+Note : viec xu ly chong' trung` khong duoc su dung Overlapping cua Laravel
+6. Len su dung moi truong code la Ubuntu + IDE PHP Storm
+7. cac cau lenh voi database phai xu? dung try catch
+8. Nghien cuu co che' concurrent update, bang cach su dung optimic locking cua Laravel khi insert hoac update
+https://laravel.com/docs/5.2/queries#pessimistic-locking
+hoac doc them bai viet cua anh
+http://seniorphp.net/laravel-5-2-with-concurrency-update-mysql-innodb-problem-and-solutions/
+slightsmile emoticon

@@ -4,24 +4,33 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-            @if (session('status'))
-                <p class='message'> {{ session('status') }} </p>
-            @endif
+       {{--  @if (Session::has('status'))
+            <p class='message'> {{ Session::get('status') }} </p>
+        @endif --}}
 
-            @if ($isReceive)
-                <p> Your gift sent! </p>
-        	@elseif ($isSend)
-        		<p> Your request are pending. </p>
-        	@else   		
+            @if ($gift)
+                @if ($gift->status==0)
+                    <p class='message'> Gift sent. </p>
+                @else ($gift->status==1)
+                    <p class="message"> Gift receive. </p>
+                @endif
+            @else   		
 	            <p> You can select a gift. </p>
-	            {!! Form::open(array('route' => 'giftdetail.store', 'method'=>'post', 'role'=>'form')) !!}
-	            {!! Form::hidden('user_id', Auth::user()->id) !!}
+	            {!! Form::open(array('route' => 'gifts.store', 'method'=>'post', 'role'=>'form')) !!}
+  
+	            <div class="form-group">
+                    {!! Form::radio('gift_id', 1) !!}
+                    <p class='name'> Name: Gift One </p>
+                </div>	
 
-	            @foreach($gifts as $gift)          
-		            @include("gifts.item", $gift)  	
-	            @endforeach
+                <div class="form-group">
+                    {!! Form::radio('gift_id', 2) !!}
+                    <p class='name'> Name: Gift Two </p>
+                </div>  
 
-	            @include("gifts.send")
+	            <div class="form-group">
+                    {!! Form::submit("Send gift", ['class'=>"btn btn-default"]) !!}
+                </div>
 
 				{!! Form::close() !!}
         	@endif

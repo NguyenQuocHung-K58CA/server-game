@@ -14,6 +14,11 @@ class Gift extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description'
+        'user_id', 'gift_id', 'status'
     ];
+
+    public static function updateByUserId($user_id, $options){
+    	$gift = Gift::where('user_id', $user_id);
+        return $gift->update($options);
+    }
 }

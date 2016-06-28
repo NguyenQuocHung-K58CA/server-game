@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGiftsTable extends Migration
+class CreateDbGiftTable extends Migration
 {
     /**
      * Run the migrations.
@@ -11,14 +11,19 @@ class CreateGiftsTable extends Migration
      * @return void
      */
     public function up()
-    {        
+    {
         Schema::create('db_gifts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('description');
+            $table->integer('user_id')->unique();
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
+                  
+            $table->integer('gift_id');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
-
     }
 
     /**

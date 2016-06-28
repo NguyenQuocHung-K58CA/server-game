@@ -15,86 +15,29 @@ class GiftsController extends Controller
         $this->middleware('auth');
     }
 
-    public function get_user_id(){
+    public function getUserId(){
         return Auth::user()->id;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $isSend = Redis::hexists("sendedGifts", $this->get_user_id());
-        $isReceive = $isSend && !Redis::hexists("receiveGifts", $this->get_user_id());
-        $gifts = Gift::all();
-        return view('gifts.index', ['gifts' => $gifts, 'isSend' => $isSend, 'isReceive'=>$isReceive]);
+        $gift = Gift::where("user_id", $this->getUserId())->first();
+        return view('gifts.index', ["gift"=>$gift]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $gift_id = $request->input('gift_id');
+        $user_id = $this->getUserId();
+
+        $checkSend = Redis::hsetnx('gifts', $user_id, $gift_id);
+        if ($checkSend) {
+            Redis::lpush("giftlist", $user_id);
+        }
+        
+        Gift::firstOrCreate(['user_id'=>$user_id, 'gift_id'=>$gift_id]);
+
+        return back();//->with("status", "Gift sent successful!");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
