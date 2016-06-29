@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use App\Gift;
+use App\Models\GiftModel;
 use Redis;
 use GuzzleHttp\Client;
 
@@ -55,7 +55,7 @@ class SendGift extends Command
                 \Log::info(" Updated for user has id = ".$user_id." ".json_decode($response->getBody() ));
                 if (json_decode($response->getBody() )=="ok") {
                     try {                        
-                        Gift::updateByUserId($user_id, ['status'=>1]);
+                        GiftModel::updateByUserId($user_id, ['status'=>1]);
                     }
                     catch (\Exception $e) {
                         \Log::info("Update Failed at App\Console\Commands\SendGift.php handle".$e);
@@ -82,7 +82,7 @@ class SendGift extends Command
     public function checkSendGift() {
         try {
             \Log::info("Run check Send");            
-            $unSendGifts = Gift::where('status', '=', 0)->get();
+            $unSendGifts = GiftModel::where('status', '=', 0)->get();
             foreach ($unSendGifts as $gift) {
                 Redis::hsetnx('gifts', $gift->user_id, $gift->gift_id);
                 Redis::lpush('giftlist', $gift->user_id);

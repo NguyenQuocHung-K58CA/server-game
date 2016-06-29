@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Gift;
+use App\Models\GiftModel;
 use Redis;
 use Auth;
 
@@ -21,7 +21,7 @@ class GiftsController extends Controller
 
     public function index()
     {
-        $gift = Gift::where("user_id", $this->getUserId())->first();
+        $gift = GiftModel::where("user_id", $this->getUserId())->first();
         return view('gifts.index', ["gift"=>$gift]);
     }
 
@@ -35,7 +35,7 @@ class GiftsController extends Controller
             Redis::lpush("giftlist", $user_id);
         }
         
-        Gift::firstOrCreate(['user_id'=>$user_id, 'gift_id'=>$gift_id]);
+        GiftModel::firstOrCreate(['user_id'=>$user_id, 'gift_id'=>$gift_id]);
 
         return back();//->with("status", "Gift sent successful!");
     }
