@@ -12,6 +12,9 @@ To run this app, your server must have Apache, Mysql, PHP >= 5.5.9, Composer and
 $ git clone https://github.com/NguyenQuocHung-K58CA/server-game.git
 $ composer install
 $ cp .env.example .env
+```
+- Change DATABASE_NAME PASSWORD in file .env
+```sh
 $ php artisan key:generate
 $ php artisan migrate
 $ php artisan serve
